@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace MDL.Billing
 {
+    #region Namespaces
+    using System;
+    #endregion Namespaces
+
     /// <summary>
     /// Common utility functions for billing.  The common utilities are abstracted to avoid any code change in case of the business rules are changed or new rules are introduced e.g., start giving 7% to users older than 5 years.
     /// Its a singleton to avoid multiple instances creation and destroying.
