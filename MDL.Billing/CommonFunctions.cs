@@ -3,6 +3,7 @@ namespace MDL.Billing
 {
     #region Namespaces
     using System;
+    using System.Collections.Generic;
     #endregion Namespaces
 
     /// <summary>
@@ -11,6 +12,8 @@ namespace MDL.Billing
     /// </summary>
     public sealed class CommonFunctions
     {
+        #region SingletonCode
+
         private static readonly Lazy<CommonFunctions> lazy =
             new Lazy<CommonFunctions>(() => new CommonFunctions());
 
@@ -19,8 +22,41 @@ namespace MDL.Billing
         private CommonFunctions()
         {
         }
+        #endregion SingletonCode
 
-        internal static int GetPercentageElligibility(User user)
+        #region Utilities
+
+        public static double GetFixedDiscount(double totalBillAmount)
+        {
+            int hundreds = Convert.ToInt32(Math.Floor(totalBillAmount / 100));
+
+            return (hundreds) * 5;
+        }
+
+        public static double GetPercentageDiscount(List<IProduct> products, IUser user)
+        {
+            double totalPercentageDiscount = 0;
+
+            float percentageElligibility = GetPercentageElligibility(user);
+
+            if (percentageElligibility > 0)
+            {
+                foreach (var product in products)
+                {
+                    if (product.Type != ProductType.Grocery)
+                    {
+                        totalPercentageDiscount += ((product.Price * percentageElligibility) / 100);
+                    }
+                }
+            }
+
+            return totalPercentageDiscount;
+        }
+
+        #endregion Utilities
+
+        #region PrivateMethods
+        private static float GetPercentageElligibility(IUser user)
         {
             int percentageElligibility = 0;
             switch (user.Type)
@@ -39,8 +75,7 @@ namespace MDL.Billing
             }
             return percentageElligibility;
         }
-
-        public static bool IsUserOlderThen(DateTime joiningDate, int yearsToCompare)
+        private static bool IsUserOlderThen(DateTime joiningDate, int yearsToCompare)
         {
             DateTime zeroTime = new DateTime(1, 1, 1);
 
@@ -50,5 +85,6 @@ namespace MDL.Billing
 
             return years >= yearsToCompare;
         }
+        #endregion PrivateMethods
     }
 }

@@ -1,72 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MDL.Billing
+﻿namespace MDL.Billing
 {
+    #region Namespaces
+    using System.Collections.Generic;
+    using System.Linq;
+    #endregion Namespaces
+
+    /// <summary>
+    /// Interface for the Bill Class
+    /// </summary>
     public interface IBill
     {
+        IUser User { get; set; }
+        
+        List<IProduct> Products { get; set; }
+
         double CalculateNetAmountPayable();
     }
 
+    /// <summary>
+    /// Concrete Bill Class
+    /// </summary>
     public class Bill : IBill
     {
-        // Dependency  (Bill must have a User and a list of products
-        public Bill(User user, List<Product> products)
+        // Dependency  (Bill must have a User and a list of products)
+        public Bill(IUser user, List<IProduct> products)
         {
             this.User = user;
             this.Products = products;
         }
+        
+        // Products bought
+        public List<IProduct> Products
+        {
+            get; set;
+        }
+        
+        // The buyer
+        public IUser User
+        {
+            get; set;
+        }
 
-        public User User { get; set; }
-
-        public List<Product> Products { get; set; }
-
-        public double TotalAmount { get; set; }
-
-        //public double PercentageDiscount { get; set; }
-
-        //public double FixedDiscount { get; set; }
-
-        //public bool IsPercentageDiscountCalculated { get; set; }
-
-        public double NetAmount { get; set; }
-
+        /// <summary>
+        /// Calculates the net amount payable
+        /// </summary>
+        /// <returns>Net amount payable</returns>
         public double CalculateNetAmountPayable()
         {
-            return TotalAmount - (GetPercentageDiscount() + GetFixedDiscount());
-        }
+            // Calculate Total Bill Amount
+            double totalBillAmount = Products.Sum(t => t.Price);
 
-        private double GetPercentageDiscount()
-        {
-            int percentageElligibility = CommonFunctions.GetPercentageElligibility(User);
+            // Get Total Percentage Based Discount
+            double totalPercentageDiscount = CommonFunctions.GetPercentageDiscount(Products, User);
 
-            // By default the discount percentage is 0.
-            double totalPercentageBasedDiscount = 0;
-
-
-            // No need to calculate if there is no elligibility.
-            if (percentageElligibility != 0)
-            {
-                foreach (var product in Products)
-                {
-                    if (product.Type != ProductType.Grocery)
-                    {
-                        totalPercentageBasedDiscount += product.Price * percentageElligibility;
-                    }
-                }
-            }
-
-            return totalPercentageBasedDiscount;                                   
-        }
-
-        //private bool IsUserElligibleForFivePercent(DateTime joiningDate)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        private int GetFixedDiscount()
-        {
-            throw new NotImplementedException();
-        }
+            // Get Total Fixed Discount
+            double totalFixedDiscount = CommonFunctions.GetFixedDiscount(totalBillAmount);
+            
+            // Net AmountP ayable After Discounts = Total Bill Amount - All Discounts
+            return totalBillAmount - (totalPercentageDiscount + totalFixedDiscount); 
+        }        
     }
 }

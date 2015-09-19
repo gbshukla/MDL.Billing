@@ -1,13 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MDL.Billing
+﻿namespace MDL.Billing
 {
-    public class Product
+    public interface IProduct
     {
+        // ID of the item
+        long Id { get; set; }
+
+        // String based code of the item
+        string Code { get; set; }
+
+        // Name of the item
+        string Name { get; set; }
+
+        // Type of the item
+        ProductType Type { get; set; }
+
+        // Selling Price
+        float Price { get; set; }
+    }
+    public class Product : IProduct
+    {
+        // Dependency to ensure product have necessary values.
+        public Product(string code, string name, ProductType type, float price)
+        {
+            Code = code;
+            Name = name;
+            Type = type;
+            Price = price;
+        }
         // ID of the item
         public long Id { get; set; }
 
@@ -25,7 +44,7 @@ namespace MDL.Billing
     }
 
     /// <summary>
-    /// 
+    /// Product types
     /// </summary>
     public enum ProductType
     {
