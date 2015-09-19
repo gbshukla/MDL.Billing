@@ -19,6 +19,9 @@ namespace MDL.Billing
 
         // Type of the item
         public ProductType Type { get; set; }
+
+        // Selling Price
+        public float Price { get; set; }
     }
 
     /// <summary>

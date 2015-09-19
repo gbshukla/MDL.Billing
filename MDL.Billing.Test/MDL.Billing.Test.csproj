@@ -65,6 +65,7 @@
     <Compile Include="BillingStructureTests.cs" />
     <Compile Include="BillingCalculationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UtilitiesTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MDL.Billing\MDL.Billing.csproj">

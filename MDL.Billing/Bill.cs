@@ -1,9 +1,5 @@
 ﻿using System;
-
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MDL.Billing
 {
@@ -42,34 +38,31 @@ namespace MDL.Billing
 
         private double GetPercentageDiscount()
         {
-            int percentageElligibility = 0;
+            int percentageElligibility = CommonFunctions.GetPercentageElligibility(User);
 
             // By default the discount percentage is 0.
             double totalPercentageBasedDiscount = 0;
 
-            switch (User.Type)
+
+            // No need to calculate if there is no elligibility.
+            if (percentageElligibility != 0)
             {
-                case UserType.Employee:
-                    percentageElligibility = 30;
-                    break;
-                case UserType.Affiliate:
-                    percentageElligibility = 10;
-                    break;
-
-                default:
-                    percentageElligibility = IsUserElligibleForFivePercent(User.JoiningDate) ? 5 : 0;
-                    break;
-                            
-
+                foreach (var product in Products)
+                {
+                    if (product.Type != ProductType.Grocery)
+                    {
+                        totalPercentageBasedDiscount += product.Price * percentageElligibility;
+                    }
+                }
             }
 
             return totalPercentageBasedDiscount;                                   
         }
 
-        private bool IsUserElligibleForFivePercent(DateTime joiningDate)
-        {
-            throw new NotImplementedException();
-        }
+        //private bool IsUserElligibleForFivePercent(DateTime joiningDate)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         private int GetFixedDiscount()
         {
