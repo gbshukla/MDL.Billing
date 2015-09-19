@@ -14,7 +14,9 @@
         
         List<IProduct> Products { get; set; }
 
-        double CalculateNetAmountPayable();
+        //double CalculateNetAmountPayable();
+        
+        double NetPayableAmount { get; }
     }
 
     /// <summary>
@@ -41,23 +43,41 @@
             get; set;
         }
 
+        public double NetPayableAmount
+        {
+            get
+            {
+                // Calculate Total Bill Amount
+                double totalBillAmount = Products.Sum(t => t.Price);
+
+                // Get Total Percentage Based Discount
+                double totalPercentageDiscount = CommonFunctions.GetPercentageDiscount(Products, User);
+
+                // Get Total Fixed Discount
+                double totalFixedDiscount = CommonFunctions.GetFixedDiscount(totalBillAmount);
+
+                // Net AmountP ayable After Discounts = Total Bill Amount - All Discounts
+                return totalBillAmount - (totalPercentageDiscount + totalFixedDiscount);
+            }
+        }
+
         /// <summary>
         /// Calculates the net amount payable
         /// </summary>
         /// <returns>Net amount payable</returns>
-        public double CalculateNetAmountPayable()
-        {
-            // Calculate Total Bill Amount
-            double totalBillAmount = Products.Sum(t => t.Price);
+        //public double CalculateNetAmountPayable()
+        //{
+        //    // Calculate Total Bill Amount
+        //    double totalBillAmount = Products.Sum(t => t.Price);
 
-            // Get Total Percentage Based Discount
-            double totalPercentageDiscount = CommonFunctions.GetPercentageDiscount(Products, User);
+        //    // Get Total Percentage Based Discount
+        //    double totalPercentageDiscount = CommonFunctions.GetPercentageDiscount(Products, User);
 
-            // Get Total Fixed Discount
-            double totalFixedDiscount = CommonFunctions.GetFixedDiscount(totalBillAmount);
+        //    // Get Total Fixed Discount
+        //    double totalFixedDiscount = CommonFunctions.GetFixedDiscount(totalBillAmount);
             
-            // Net AmountP ayable After Discounts = Total Bill Amount - All Discounts
-            return totalBillAmount - (totalPercentageDiscount + totalFixedDiscount); 
-        }        
+        //    // Net AmountP ayable After Discounts = Total Bill Amount - All Discounts
+        //    return totalBillAmount - (totalPercentageDiscount + totalFixedDiscount); 
+        //}        
     }
 }

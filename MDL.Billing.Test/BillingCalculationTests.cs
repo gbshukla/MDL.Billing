@@ -88,7 +88,7 @@ namespace MDL.Billing.Test
             Bill bill = new Bill(GenerateEmployee(), GenerateProductListWithoutGrocery());
 
             // 100 - 30 (Percentage Employee Discount) - 5 (fixed discount for 100 USD)
-            Assert.Equal(65, bill.CalculateNetAmountPayable());
+            Assert.Equal(65, bill.NetPayableAmount);
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace MDL.Billing.Test
             Bill bill = new Bill(GenerateAffiliate(), GenerateProductListWithoutGrocery());
 
             // 100 - 10 (Percentage Employee Discount) - 5 (fixed discount for 100 USD)
-            Assert.Equal(85, bill.CalculateNetAmountPayable());
+            Assert.Equal(85, bill.NetPayableAmount);
         }
 
         [Fact]
@@ -109,7 +109,7 @@ namespace MDL.Billing.Test
             Bill bill = new Bill(user, GenerateProductListWithoutGrocery());
 
             // 100 - 10 (Percentage Employee Discount) - 5 (fixed discount for 100 USD)
-            Assert.Equal(90, bill.CalculateNetAmountPayable());
+            Assert.Equal(90, bill.NetPayableAmount);
         }
 
         #endregion Tests
