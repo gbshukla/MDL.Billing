@@ -15,7 +15,7 @@ namespace MDL.Billing.Test
         {
             IUser user = GenerateEmployee();
 
-            double discount = CommonFunctions.GetPercentageDiscount(GenerateProductListWithoutGrocery(), user);
+            double discount = CommonFunctions.GetTotalAmountBasedOnPercentageDiscount(GenerateProductListWithoutGrocery(), user);
 
             // Total price of products are 100 USD.  So, 30% of 100 will be 30 USD.
             Assert.Equal(30, discount);                   
@@ -26,7 +26,7 @@ namespace MDL.Billing.Test
         {
             IUser user = GenerateAffiliate();
 
-            double discount = CommonFunctions.GetPercentageDiscount(GenerateProductListWithoutGrocery(), user);
+            double discount = CommonFunctions.GetTotalAmountBasedOnPercentageDiscount(GenerateProductListWithoutGrocery(), user);
 
             // Total price of products are 100 USD.  So, 10% of 100 will be 10 USD.
             Assert.Equal(10, discount);
@@ -38,7 +38,7 @@ namespace MDL.Billing.Test
             IUser user = GenerateUser();
             user.JoiningDate = DateTime.Parse("26-Jan-2010");
 
-            double discount = CommonFunctions.GetPercentageDiscount(GenerateProductListWithoutGrocery(), user);
+            double discount = CommonFunctions.GetTotalAmountBasedOnPercentageDiscount(GenerateProductListWithoutGrocery(), user);
 
             // Total price of products are 100 USD.  So, 5% of 100 will be 5 USD.
             Assert.Equal(discount, 5);
@@ -61,7 +61,7 @@ namespace MDL.Billing.Test
         {
             IUser user = GenerateEmployee();
 
-            double discount = CommonFunctions.GetPercentageDiscount(GenerateProductListWithGrocery(), user);
+            double discount = CommonFunctions.GetTotalAmountBasedOnPercentageDiscount(GenerateProductListWithGrocery(), user);
 
             // Total price of products are 120 USD.  So, 30% of 120 will be 36 USD.
             Assert.NotEqual(36, discount);
@@ -76,7 +76,7 @@ namespace MDL.Billing.Test
             IUser user = GenerateAffiliate();
             user.JoiningDate = DateTime.Parse("26-Jan-2010");
 
-            double discount = CommonFunctions.GetPercentageDiscount(GenerateProductListWithoutGrocery(), user);
+            double discount = CommonFunctions.GetTotalAmountBasedOnPercentageDiscount(GenerateProductListWithoutGrocery(), user);
 
             // Total price of products are 100 USD.  So, 10% of 100 will be 10 USD.
             Assert.Equal(10, discount);

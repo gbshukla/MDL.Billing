@@ -33,7 +33,7 @@ namespace MDL.Billing
             return (hundreds) * 5;
         }
 
-        public static double GetPercentageDiscount(List<IProduct> products, IUser user)
+        public static double GetTotalAmountBasedOnPercentageDiscount(List<IProduct> products, IUser user)
         {
             double totalPercentageDiscount = 0;
 
